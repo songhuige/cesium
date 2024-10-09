@@ -155,15 +155,15 @@ VoxelCylinderShape.prototype.update = function (
   minBounds,
   maxBounds,
   clipMinBounds,
-  clipMaxBounds
+  clipMaxBounds,
 ) {
   clipMinBounds = defaultValue(
     clipMinBounds,
-    VoxelCylinderShape.DefaultMinBounds
+    VoxelCylinderShape.DefaultMinBounds,
   );
   clipMaxBounds = defaultValue(
     clipMaxBounds,
-    VoxelCylinderShape.DefaultMaxBounds
+    VoxelCylinderShape.DefaultMaxBounds,
   );
   //>>includeStart('debug', pragmas.debug);
   Check.typeOf.object("modelMatrix", modelMatrix);
@@ -188,22 +188,22 @@ VoxelCylinderShape.prototype.update = function (
   const shapeMinRadius = CesiumMath.clamp(
     minBounds.x,
     defaultMinRadius,
-    defaultMaxRadius
+    defaultMaxRadius,
   );
   const shapeMaxRadius = CesiumMath.clamp(
     maxBounds.x,
     defaultMinRadius,
-    defaultMaxRadius
+    defaultMaxRadius,
   );
   const clipMinRadius = CesiumMath.clamp(
     clipMinBounds.x,
     defaultMinRadius,
-    defaultMaxRadius
+    defaultMaxRadius,
   );
   const clipMaxRadius = CesiumMath.clamp(
     clipMaxBounds.x,
     defaultMinRadius,
-    defaultMaxRadius
+    defaultMaxRadius,
   );
   const renderMinRadius = Math.max(shapeMinRadius, clipMinRadius);
   const renderMaxRadius = Math.min(shapeMaxRadius, clipMaxRadius);
@@ -212,22 +212,22 @@ VoxelCylinderShape.prototype.update = function (
   const shapeMinHeight = CesiumMath.clamp(
     minBounds.y,
     defaultMinHeight,
-    defaultMaxHeight
+    defaultMaxHeight,
   );
   const shapeMaxHeight = CesiumMath.clamp(
     maxBounds.y,
     defaultMinHeight,
-    defaultMaxHeight
+    defaultMaxHeight,
   );
   const clipMinHeight = CesiumMath.clamp(
     clipMinBounds.y,
     defaultMinHeight,
-    defaultMaxHeight
+    defaultMaxHeight,
   );
   const clipMaxHeight = CesiumMath.clamp(
     clipMaxBounds.y,
     defaultMinHeight,
-    defaultMaxHeight
+    defaultMaxHeight,
   );
   const renderMinHeight = Math.max(shapeMinHeight, clipMinHeight);
   const renderMaxHeight = Math.min(shapeMaxHeight, clipMaxHeight);
@@ -278,18 +278,18 @@ VoxelCylinderShape.prototype.update = function (
     renderMinAngle,
     renderMaxAngle,
     this.shapeTransform,
-    this.orientedBoundingBox
+    this.orientedBoundingBox,
   );
 
   this.boundTransform = Matrix4.fromRotationTranslation(
     this.orientedBoundingBox.halfAxes,
     this.orientedBoundingBox.center,
-    this.boundTransform
+    this.boundTransform,
   );
 
   this.boundingSphere = BoundingSphere.fromOrientedBoundingBox(
     this.orientedBoundingBox,
-    this.boundingSphere
+    this.boundingSphere,
   );
 
   const shapeIsDefaultMaxRadius = shapeMaxRadius === defaultMaxRadius;
@@ -315,13 +315,13 @@ VoxelCylinderShape.prototype.update = function (
     shapeMinAngle,
     defaultMinAngle,
     undefined,
-    epsilonAngleDiscontinuity
+    epsilonAngleDiscontinuity,
   );
   const shapeIsMaxAngleDiscontinuity = CesiumMath.equalsEpsilon(
     shapeMaxAngle,
     defaultMaxAngle,
     undefined,
-    epsilonAngleDiscontinuity
+    epsilonAngleDiscontinuity,
   );
 
   const renderIsDefaultMinRadius = renderMinRadius === defaultMinRadius;
@@ -361,7 +361,7 @@ VoxelCylinderShape.prototype.update = function (
   shaderUniforms.cylinderRenderRadiusMinMax = Cartesian2.fromElements(
     renderMinRadius,
     renderMaxRadius,
-    shaderUniforms.cylinderRenderRadiusMinMax
+    shaderUniforms.cylinderRenderRadiusMinMax,
   );
 
   if (renderMinRadius === renderMaxRadius) {
@@ -386,7 +386,7 @@ VoxelCylinderShape.prototype.update = function (
     shaderUniforms.cylinderUvToShapeUvRadius = Cartesian2.fromElements(
       scale,
       offset,
-      shaderUniforms.cylinderUvToShapeUvRadius
+      shaderUniforms.cylinderUvToShapeUvRadius,
     );
   }
 
@@ -414,13 +414,13 @@ VoxelCylinderShape.prototype.update = function (
     shaderUniforms.cylinderUvToShapeUvHeight = Cartesian2.fromElements(
       scale,
       offset,
-      shaderUniforms.cylinderUvToShapeUvHeight
+      shaderUniforms.cylinderUvToShapeUvHeight,
     );
   }
   shaderUniforms.cylinderRenderHeightMinMax = Cartesian2.fromElements(
     renderMinHeight,
     renderMaxHeight,
-    shaderUniforms.cylinderRenderHeightMinMax
+    shaderUniforms.cylinderRenderHeightMinMax,
   );
 
   if (shapeIsAngleReversed) {
@@ -445,7 +445,7 @@ VoxelCylinderShape.prototype.update = function (
     shaderUniforms.cylinderRenderAngleMinMax = Cartesian2.fromElements(
       renderMinAngle,
       renderMaxAngle,
-      shaderUniforms.cylinderRenderAngleMinMax
+      shaderUniforms.cylinderRenderAngleMinMax,
     );
   }
 
@@ -465,7 +465,7 @@ VoxelCylinderShape.prototype.update = function (
     shaderUniforms.cylinderShapeUvAngleMinMax = Cartesian2.fromElements(
       uvMinAngle,
       uvMaxAngle,
-      shaderUniforms.cylinderShapeUvAngleMinMax
+      shaderUniforms.cylinderShapeUvAngleMinMax,
     );
     shaderUniforms.cylinderShapeUvAngleRangeZeroMid =
       (uvMaxAngle + 0.5 * uvAngleRangeZero) % 1.0;
@@ -483,7 +483,7 @@ VoxelCylinderShape.prototype.update = function (
       shaderUniforms.cylinderUvToShapeUvAngle = Cartesian2.fromElements(
         0.0,
         1.0,
-        shaderUniforms.cylinderUvToShapeUvAngle
+        shaderUniforms.cylinderUvToShapeUvAngle,
       );
     } else {
       const scale = defaultAngleRange / shapeAngleRange;
@@ -491,7 +491,7 @@ VoxelCylinderShape.prototype.update = function (
       shaderUniforms.cylinderUvToShapeUvAngle = Cartesian2.fromElements(
         scale,
         offset,
-        shaderUniforms.cylinderUvToShapeUvAngle
+        shaderUniforms.cylinderUvToShapeUvAngle,
       );
     }
   }
@@ -517,7 +517,7 @@ VoxelCylinderShape.prototype.computeOrientedBoundingBoxForTile = function (
   tileX,
   tileY,
   tileZ,
-  result
+  result,
 ) {
   //>>includeStart('debug', pragmas.debug);
   Check.typeOf.number("tileLevel", tileLevel);
@@ -539,32 +539,32 @@ VoxelCylinderShape.prototype.computeOrientedBoundingBoxForTile = function (
   const radiusStart = CesiumMath.lerp(
     minimumRadius,
     maximumRadius,
-    tileX * sizeAtLevel
+    tileX * sizeAtLevel,
   );
   const radiusEnd = CesiumMath.lerp(
     minimumRadius,
     maximumRadius,
-    (tileX + 1) * sizeAtLevel
+    (tileX + 1) * sizeAtLevel,
   );
   const heightStart = CesiumMath.lerp(
     minimumHeight,
     maximumHeight,
-    tileY * sizeAtLevel
+    tileY * sizeAtLevel,
   );
   const heightEnd = CesiumMath.lerp(
     minimumHeight,
     maximumHeight,
-    (tileY + 1) * sizeAtLevel
+    (tileY + 1) * sizeAtLevel,
   );
   const angleStart = CesiumMath.lerp(
     minimumAngle,
     maximumAngle,
-    tileZ * sizeAtLevel
+    tileZ * sizeAtLevel,
   );
   const angleEnd = CesiumMath.lerp(
     minimumAngle,
     maximumAngle,
-    (tileZ + 1) * sizeAtLevel
+    (tileZ + 1) * sizeAtLevel,
   );
 
   return getCylinderChunkObb(
@@ -575,7 +575,7 @@ VoxelCylinderShape.prototype.computeOrientedBoundingBoxForTile = function (
     angleStart,
     angleEnd,
     this.shapeTransform,
-    result
+    result,
   );
 };
 
@@ -597,7 +597,7 @@ VoxelCylinderShape.prototype.computeOrientedBoundingBoxForSample = function (
   spatialNode,
   tileDimensions,
   tileUv,
-  result
+  result,
 ) {
   //>>includeStart('debug', pragmas.debug);
   Check.typeOf.object("spatialNode", spatialNode);
@@ -610,12 +610,12 @@ VoxelCylinderShape.prototype.computeOrientedBoundingBoxForSample = function (
   const sampleSize = Cartesian3.divideComponents(
     Cartesian3.ONE,
     tileDimensions,
-    sampleSizeScratch
+    sampleSizeScratch,
   );
   const sampleSizeAtLevel = Cartesian3.multiplyByScalar(
     sampleSize,
     tileSizeAtLevel,
-    sampleSizeScratch
+    sampleSizeScratch,
   );
 
   const minLerp = Cartesian3.multiplyByScalar(
@@ -623,15 +623,15 @@ VoxelCylinderShape.prototype.computeOrientedBoundingBoxForSample = function (
       spatialNode.x + tileUv.x,
       spatialNode.y + tileUv.y,
       spatialNode.z + tileUv.z,
-      scratchTileMinBounds
+      scratchTileMinBounds,
     ),
     tileSizeAtLevel,
-    scratchTileMinBounds
+    scratchTileMinBounds,
   );
   const maxLerp = Cartesian3.add(
     minLerp,
     sampleSizeAtLevel,
-    scratchTileMaxBounds
+    scratchTileMaxBounds,
   );
 
   const minimumRadius = this._minimumRadius;
@@ -656,69 +656,8 @@ VoxelCylinderShape.prototype.computeOrientedBoundingBoxForSample = function (
     angleStart,
     angleEnd,
     this.shapeTransform,
-    result
+    result,
   );
-};
-
-const scratchOrientedBoundingBox = new OrientedBoundingBox();
-const scratchVoxelScale = new Cartesian3();
-const scratchRootScale = new Cartesian3();
-const scratchScaleRatio = new Cartesian3();
-
-/**
- * Computes an approximate step size for raymarching the root tile of a voxel grid.
- * The update function must be called before calling this function.
- *
- * @param {Cartesian3} dimensions The voxel grid dimensions for a tile.
- * @returns {number} The step size.
- */
-VoxelCylinderShape.prototype.computeApproximateStepSize = function (
-  dimensions
-) {
-  //>>includeStart('debug', pragmas.debug);
-  Check.typeOf.object("dimensions", dimensions);
-  //>>includeEnd('debug');
-
-  const shapeTransform = this.shapeTransform;
-  const minRadius = this._minimumRadius;
-  const maxRadius = this._maximumRadius;
-  const minHeight = this._minimumHeight;
-  const maxHeight = this._maximumHeight;
-  const minAngle = this._minimumAngle;
-  const maxAngle = this._maximumAngle;
-
-  const lerpRadius = 1.0 - 1.0 / dimensions.x;
-  const lerpHeight = 1.0 - 1.0 / dimensions.y;
-  const lerpAngle = 1.0 - 1.0 / dimensions.z;
-
-  // Compare the size of an outermost cylinder voxel to the total cylinder
-  const voxelMinimumRadius = CesiumMath.lerp(minRadius, maxRadius, lerpRadius);
-  const voxelMinimumHeight = CesiumMath.lerp(minHeight, maxHeight, lerpHeight);
-  const voxelMinimumAngle = CesiumMath.lerp(minAngle, maxAngle, lerpAngle);
-  const voxelMaximumRadius = maxRadius;
-  const voxelMaximumHeight = maxHeight;
-  const voxelMaximumAngle = maxAngle;
-
-  const voxelObb = getCylinderChunkObb(
-    voxelMinimumRadius,
-    voxelMaximumRadius,
-    voxelMinimumHeight,
-    voxelMaximumHeight,
-    voxelMinimumAngle,
-    voxelMaximumAngle,
-    shapeTransform,
-    scratchOrientedBoundingBox
-  );
-
-  const voxelScale = Matrix3.getScale(voxelObb.halfAxes, scratchVoxelScale);
-  const rootScale = Matrix4.getScale(shapeTransform, scratchRootScale);
-  const scaleRatio = Cartesian3.divideComponents(
-    voxelScale,
-    rootScale,
-    scratchScaleRatio
-  );
-  const stepSize = Cartesian3.minimumComponent(scaleRatio);
-  return stepSize;
 };
 
 /**
@@ -731,7 +670,7 @@ VoxelCylinderShape.prototype.computeApproximateStepSize = function (
  * @private
  */
 VoxelCylinderShape.DefaultMinBounds = Object.freeze(
-  new Cartesian3(0.0, -1.0, -CesiumMath.PI)
+  new Cartesian3(0.0, -1.0, -CesiumMath.PI),
 );
 
 /**
@@ -744,7 +683,7 @@ VoxelCylinderShape.DefaultMinBounds = Object.freeze(
  * @private
  */
 VoxelCylinderShape.DefaultMaxBounds = Object.freeze(
-  new Cartesian3(1.0, +1.0, +CesiumMath.PI)
+  new Cartesian3(1.0, +1.0, +CesiumMath.PI),
 );
 
 const maxTestAngles = 5;
@@ -823,7 +762,7 @@ function getCylinderChunkObb(
   angleStart,
   angleEnd,
   matrix,
-  result
+  result,
 ) {
   const defaultMinBounds = VoxelCylinderShape.DefaultMinBounds;
   const defaultMaxBounds = VoxelCylinderShape.DefaultMaxBounds;
@@ -906,7 +845,7 @@ function getCylinderChunkObb(
     centerX,
     centerY,
     centerZ,
-    scratchTranslation
+    scratchTranslation,
   );
 
   const rotation = Matrix3.fromRotationZ(angleMid, scratchRotation);
@@ -915,14 +854,14 @@ function getCylinderChunkObb(
     extentX,
     extentY,
     extentZ,
-    scratchScale
+    scratchScale,
   );
 
   const scaleMatrix = Matrix4.fromScale(scale, scratchScaleMatrix);
   const rotationMatrix = Matrix4.fromRotation(rotation, scratchRotationMatrix);
   const translationMatrix = Matrix4.fromTranslation(
     translation,
-    scratchTranslationMatrix
+    scratchTranslationMatrix,
   );
 
   // Shape space matrix = R * T * S
@@ -931,15 +870,15 @@ function getCylinderChunkObb(
     Matrix4.multiplyTransformation(
       translationMatrix,
       scaleMatrix,
-      scratchMatrix
+      scratchMatrix,
     ),
-    scratchMatrix
+    scratchMatrix,
   );
 
   const globalMatrix = Matrix4.multiplyTransformation(
     matrix,
     localMatrix,
-    scratchMatrix
+    scratchMatrix,
   );
 
   if (!isValidOrientedBoundingBoxTransformation(globalMatrix)) {

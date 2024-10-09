@@ -145,15 +145,15 @@ describe("DataSources/Entity", function () {
     entity.availability = intervals;
     expect(
       entity.isAvailable(
-        JulianDate.addSeconds(interval.start, -1, new JulianDate())
-      )
+        JulianDate.addSeconds(interval.start, -1, new JulianDate()),
+      ),
     ).toEqual(false);
     expect(entity.isAvailable(interval.start)).toEqual(true);
     expect(entity.isAvailable(interval.stop)).toEqual(true);
     expect(
       entity.isAvailable(
-        JulianDate.addSeconds(interval.stop, 1, new JulianDate())
-      )
+        JulianDate.addSeconds(interval.stop, 1, new JulianDate()),
+      ),
     ).toEqual(false);
   });
 
@@ -179,6 +179,27 @@ describe("DataSources/Entity", function () {
         expect(listener).toHaveBeenCalledWith(entity, name, newValue, oldValue);
       }
     }
+  });
+
+  it("definitionChanged works for properties added via addProperty", function () {
+    const entity = new Entity();
+
+    const propertyName = "justForTest";
+    entity.addProperty(propertyName);
+    const oldValue = new ConstantProperty(1);
+    entity[propertyName] = oldValue;
+
+    const listener = jasmine.createSpy("listener");
+    entity.definitionChanged.addEventListener(listener);
+
+    const newValue = new ConstantProperty(1);
+    entity[propertyName] = newValue;
+    expect(listener).toHaveBeenCalledWith(
+      entity,
+      propertyName,
+      newValue,
+      oldValue,
+    );
   });
 
   it("merge ignores reserved property names when called with a plain object.", function () {
@@ -277,7 +298,7 @@ describe("DataSources/Entity", function () {
     const modelMatrix = entity.computeModelMatrix(new JulianDate());
     const expected = Matrix4.fromRotationTranslation(
       Matrix3.fromQuaternion(orientation),
-      position
+      position,
     );
     expect(modelMatrix).toEqual(expected);
   });
